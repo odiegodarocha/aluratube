@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import Banner from "../src/components/Banner";
 
 function HomePage() {
   return (
@@ -10,6 +11,7 @@ function HomePage() {
       <CSSReset />
       <div>
         <Menu />
+        <Banner />
         <Header />
         <Timeline playlists={config.playlists} />
       </div>
@@ -19,10 +21,6 @@ function HomePage() {
 
 export default HomePage;
 
-// function Menu() {
-//   return <div>Menu</div>;
-// }
-
 const StyledHeader = styled.div`
   .userImage {
     width: 80px;
@@ -31,7 +29,9 @@ const StyledHeader = styled.div`
   }
   .userInfo {
     display: flex;
-    gap: 10px;
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
   }
 `;
 function Header() {
