@@ -43,4 +43,17 @@ export const StyledTimeline = styled.div`
       }
     }
   }
+  .channel-info {
+    text-align: center;
+    span {
+      padding: 0;
+    }
+    a {
+      img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+    }
+  }
 `;

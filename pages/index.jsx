@@ -3,7 +3,7 @@ import config from "../config.json";
 import styled from "styled-components";
 import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
-import { StyledTimeline } from "../src/components/Timeline";
+import { StyledChannels, StyledTimeline } from "../src/components/Timeline";
 import Banner from "../src/components/Banner";
 
 function HomePage() {
@@ -17,6 +17,7 @@ function HomePage() {
         <Banner />
         <Header />
         <Timeline filterValue={filterValue} playlists={config.playlists} />
+        <Channels channels={config.channels} />
       </div>
     </>
   );
@@ -74,6 +75,34 @@ function Timeline({filterValue, ...props}) {
 
                 return titleNormalized.includes(filterValueNormalized)
               }).map((item) => {
+                return (
+                  <a key={item.url} href={item.url}>
+                    <img src={item.thumb} />
+                    <span>{item.title}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+    </StyledTimeline>
+  );
+}
+
+function Channels(props) {
+  const channelsNames = Object.keys(props.channels);
+
+  return (
+    <StyledTimeline>
+      {channelsNames.map((channelsName) => {
+        const items = props.channels[channelsName];
+
+        return (
+          <section key={channelsName}>
+            <h2>Canais Favoritos</h2>
+            <div className="channel-info">
+              {items.map((item) => {
                 return (
                   <a key={item.url} href={item.url}>
                     <img src={item.thumb} />
