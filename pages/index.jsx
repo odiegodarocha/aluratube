@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import config from "../config.json";
 import styled from "styled-components";
-import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledChannels, StyledTimeline } from "../src/components/Timeline";
 import Banner from "../src/components/Banner";
@@ -11,7 +10,6 @@ function HomePage() {
 
   return (
     <>
-      <CSSReset />
       <div>
         <Menu filterValue={filterValue} setFilterValue={setFilterValue} />
         <Banner />
@@ -26,6 +24,7 @@ function HomePage() {
 export default HomePage;
 
 const StyledHeader = styled.div`
+  background-color: ${({ theme }) => theme.backgroundLevel1};
   .userImage {
     width: 80px;
     height: 80px;
