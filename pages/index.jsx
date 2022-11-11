@@ -1,12 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import config from "../config.json";
 import styled from "styled-components";
 import Menu from "../src/components/Menu";
-import { StyledChannels, StyledTimeline } from "../src/components/Timeline";
+import { StyledTimeline } from "../src/components/Timeline";
 import Banner from "../src/components/Banner";
+import { videoService } from "../src/services/videoService";
 
 function HomePage() {
+  const service = videoService();
   const [filterValue, setFilterValue] = useState("");
+  const [playlists, setPlaylists] = useState({});
+
+  useEffect(() => {
+    service
+      .getVideo()
+      .select("*")
+      .then((videoData) => {
+        const newPlaylists = { ...playlists };
+        videoData.data.forEach((video) => {
+          if (!newPlaylists[video.playlist]) {
+            newPlaylists[video.playlist] = [];
+          }
+          newPlaylists[video.playlist].push(video);
+        });
+        setPlaylists(newPlaylists);
+      });
+  }, []);
 
   return (
     <>
@@ -14,7 +33,7 @@ function HomePage() {
         <Menu filterValue={filterValue} setFilterValue={setFilterValue} />
         <Banner />
         <Header />
-        <Timeline filterValue={filterValue} playlists={config.playlists} />
+        <Timeline filterValue={filterValue} playlists={playlists} />
         <Channels channels={config.channels} />
       </div>
     </>
@@ -56,7 +75,7 @@ function Header() {
   );
 }
 
-function Timeline({filterValue, ...props}) {
+function Timeline({ filterValue, ...props }) {
   const playlistNames = Object.keys(props.playlists);
 
   return (
@@ -68,19 +87,21 @@ function Timeline({filterValue, ...props}) {
           <section key={playlistName}>
             <h2>{playlistName}</h2>
             <div>
-              {videos.filter((video) => {
-                const titleNormalized = video.title.toLowerCase();
-                const filterValueNormalized = filterValue.toLowerCase();
+              {videos
+                .filter((video) => {
+                  const titleNormalized = video.title.toLowerCase();
+                  const filterValueNormalized = filterValue.toLowerCase();
 
-                return titleNormalized.includes(filterValueNormalized)
-              }).map((item) => {
-                return (
-                  <a key={item.url} href={item.url}>
-                    <img src={item.thumb} />
-                    <span>{item.title}</span>
-                  </a>
-                );
-              })}
+                  return titleNormalized.includes(filterValueNormalized);
+                })
+                .map((item) => {
+                  return (
+                    <a key={item.id} href={item.id}>
+                      <img src={item.thumbnail} />
+                      <span>{item.title}</span>
+                    </a>
+                  );
+                })}
             </div>
           </section>
         );
@@ -104,7 +125,7 @@ function Channels(props) {
               {items.map((item) => {
                 return (
                   <a key={item.url} href={item.url}>
-                    <img src={item.thumb} />
+                    <img src={item.thumbnail} />
                     <span>{item.title}</span>
                   </a>
                 );
