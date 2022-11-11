@@ -96,7 +96,7 @@ function Timeline({ filterValue, ...props }) {
                 })
                 .map((item) => {
                   return (
-                    <a key={item.id} href={item.id}>
+                    <a key={item.id} href={item.url}>
                       <img src={item.thumbnail} />
                       <span>{item.title}</span>
                     </a>
